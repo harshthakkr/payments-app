@@ -19,7 +19,6 @@ const Signin = () => {
         password,
       }
     );
-
     navigate("/dashboard");
 
     localStorage.removeItem("token");

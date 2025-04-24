@@ -26,6 +26,22 @@ const editBody = z.object({
   lastName: z.string().trim().min(2).max(20).optional(),
 });
 
+userRouter.get("/", async (req, res) => {
+  try {
+    const { id } = req.query;
+    const user = await User.findOne({ _id: id }).select(
+      "firstName lastName -_id"
+    );
+    if (!user) {
+      res.status(404).json({ msg: "No user with this id exists" });
+    }
+    res.status(200).json({ user });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+});
+
 userRouter.post("/signup", async (req, res) => {
   try {
     const body = signupBody.safeParse(req.body);
@@ -105,6 +121,16 @@ userRouter.put("/", async (req, res) => {
   } catch (e) {
     console.error(e);
     return res.status(400).json({ msg: `Internal server error` });
+  }
+});
+
+userRouter.get("/all", async (req, res) => {
+  try {
+    const users = await User.find({}).select("firstName lastName").limit(5);
+    return res.status(200).json({ users });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ msg: "Internal server error" });
   }
 });
 

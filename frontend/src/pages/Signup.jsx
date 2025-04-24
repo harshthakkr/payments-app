@@ -17,7 +17,7 @@ const Signup = () => {
     e.preventDefault();
 
     const response = await axios.post(
-      `${import.meta.env.BASE_URL}/api/v1/user/signup`,
+      `${import.meta.env.VITE_BASE_URL}/api/v1/user/signup`,
       {
         firstName,
         lastName,
