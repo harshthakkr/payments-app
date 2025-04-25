@@ -29,9 +29,7 @@ const editBody = z.object({
 userRouter.get("/", async (req, res) => {
   try {
     const { id } = req.query;
-    const user = await User.findOne({ _id: id }).select(
-      "firstName lastName -_id"
-    );
+    const user = await User.findOne({ _id: id }).select("firstName lastName");
     if (!user) {
       res.status(404).json({ msg: "No user with this id exists" });
     }
@@ -121,16 +119,6 @@ userRouter.put("/", async (req, res) => {
   } catch (e) {
     console.error(e);
     return res.status(400).json({ msg: `Internal server error` });
-  }
-});
-
-userRouter.get("/all", async (req, res) => {
-  try {
-    const users = await User.find({}).select("firstName lastName").limit(5);
-    return res.status(200).json({ users });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ msg: "Internal server error" });
   }
 });
 

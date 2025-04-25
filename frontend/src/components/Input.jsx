@@ -1,4 +1,4 @@
-const Input = ({ prop, setProp, label, type, placeholder }) => {
+const Input = ({ prop, setProp, label, type, placeholder, min }) => {
   return (
     <div className="flex flex-col gap-1">
       <label className="font-semibold">{label}</label>
@@ -12,6 +12,7 @@ const Input = ({ prop, setProp, label, type, placeholder }) => {
         }}
         type={type}
         placeholder={placeholder}
+        min={min}
       ></input>
     </div>
   );
