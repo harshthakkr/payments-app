@@ -44,7 +44,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen flex justify-center items-center bg-gray-300 py-8">
+    <div className="font-epilouge min-h-screen w-screen flex justify-center items-center bg-gray-300 py-8">
       <div className="bg-white rounded-2xl p-12">
         <Heading text="Sign Up" />
         <InfoText text="Enter your information to create an account" />
