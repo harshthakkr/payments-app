@@ -10,7 +10,7 @@ import Heading from "../components/Heading";
 const SendMoney = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { firstName, lastName, receiverId } = location.state || {};
+  const { username, firstName, lastName, receiverId } = location.state || {};
   const [amount, setAmount] = useState("");
 
   const handleTransfer = async (e) => {
@@ -37,18 +37,21 @@ const SendMoney = () => {
     }
   };
 
-  return !firstName || !receiverId ? (
+  return !username || !firstName || !receiverId ? (
     <NonAuthorizationMessage />
   ) : (
     <div className="min-h-screen flex justify-center items-center">
       <div className="min-w-[448px] shadow-2xl rounded-2xl p-12">
         <Heading text="Send Money" />
-        <div className="flex flex-col gap-3 mb-11">
-          <div className="flex gap-3 items-center bg-gray-100 p-3 rounded-lg">
+        <div className="flex flex-col gap-3 mt-11">
+          <div className="flex gap-4 items-center bg-gray-100 px-4 py-3 rounded-lg">
             <Avatar letter={firstName.charAt(0) + lastName.charAt(0)} />
-            <p className="font-semibold text-lg">
-              {firstName} {lastName}
-            </p>
+            <div>
+              <p className="font-semibold text-lg">
+                {firstName} {lastName}
+              </p>
+              <p className="text-sm font-light">{username}</p>
+            </div>
           </div>
           <form
             onSubmit={(e) => handleTransfer(e)}

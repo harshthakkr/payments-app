@@ -90,6 +90,7 @@ const Dashboard = () => {
             return user._id === currentUser._id ? null : (
               <User
                 key={user._id}
+                username={user.username}
                 firstName={user.firstName}
                 lastName={user.lastName}
                 receiverId={user._id}
