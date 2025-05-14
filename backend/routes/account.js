@@ -28,18 +28,18 @@ accountRouter.post("/transfer", async (req, res) => {
     const body = transferBody.safeParse(req.body);
     if (!body.success) {
       session.abortTransaction();
-      return res.status(411).json({ msg: "Invalid inputs" });
+      return res.status(400).json({ msg: "Invalid inputs" });
     }
     const { to, amount } = body.data;
     const sender = await Account.findOne({ user: req.id }).session(session);
     if (sender.balance < amount) {
       session.abortTransaction();
-      return res.status(411).json({ msg: "Insufficient balance" });
+      return res.status(400).json({ msg: "Insufficient balance" });
     }
     const receiver = await Account.findOne({ user: to }).session(session);
     if (!receiver) {
       session.abortTransaction();
-      return res.status(400).json({ msg: "Account not found" });
+      return res.status(404).json({ msg: "Account not found" });
     }
     await Account.updateOne(
       { user: to },

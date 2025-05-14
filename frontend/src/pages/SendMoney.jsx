@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import NonAuthorizationMessage from "../components/NonAuthorizationMessage";
+import Heading from "../components/Heading";
 
 const SendMoney = () => {
   const navigate = useNavigate();
@@ -41,8 +42,8 @@ const SendMoney = () => {
   ) : (
     <div className="min-h-screen flex justify-center items-center">
       <div className="min-w-[448px] shadow-2xl rounded-2xl p-12">
-        <h1 className="font-bold text-3xl text-center mb-12">Send Money</h1>
-        <div className="flex flex-col gap-3">
+        <Heading text="Send Money" />
+        <div className="flex flex-col gap-3 mb-11">
           <div className="flex gap-3 items-center bg-gray-100 p-3 rounded-lg">
             <Avatar letter={firstName.charAt(0) + lastName.charAt(0)} />
             <p className="font-semibold text-lg">

@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import AuthenticateButton from "../components/AuthenticateButton";
 
 const Signin = () => {
   const [username, setUsername] = useState("");
@@ -52,9 +53,7 @@ const Signin = () => {
             type="password"
             placeholder="*******"
           />
-          <button className="cursor-pointer bg-black text-white rounded-md py-3 mt-4">
-            Sign In
-          </button>
+          <AuthenticateButton text="Sign In" />
           <p className="text-center">
             Don&apos;t have an account?{" "}
             <a className="underline hover:no-underline" href="/signup">

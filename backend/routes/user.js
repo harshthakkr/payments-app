@@ -31,11 +31,11 @@ userRouter.get("/", async (req, res) => {
     const { id } = req.query;
     const user = await User.findOne({ _id: id }).select("firstName lastName");
     if (!user) {
-      res.status(404).json({ msg: "No user with this id exists" });
+      return res.status(404).json({ msg: "No user with this id exists" });
     }
-    res.status(200).json({ user });
+    return res.status(200).json({ user });
   } catch (e) {
-    res.status(500).json({ msg: "Internal server error" });
+    return res.status(500).json({ msg: "Internal server error" });
   }
 });
 
@@ -94,7 +94,7 @@ userRouter.post("/signin", async (req, res) => {
       }
       return res.status(401).json({ msg: `Incorrect password` });
     }
-    return res.status(400).json({ msg: `User doesn't exist, Please sign up` });
+    return res.status(404).json({ msg: `User doesn't exist, Please sign up` });
   } catch (e) {
     return res.status(500).json({ msg: `Internal server error` });
   }
@@ -106,7 +106,7 @@ userRouter.put("/", async (req, res) => {
   try {
     const { success, data } = editBody.safeParse(req.body);
     if (!success) {
-      return res.status(411).json({ msg: `Invalid input` });
+      return res.status(400).json({ msg: `Invalid input` });
     }
     if (data.password) {
       req.body.password = await bcrypt.hash(data.password, 12);
@@ -114,7 +114,7 @@ userRouter.put("/", async (req, res) => {
     await User.findOneAndUpdate({ _id: req.id }, req.body);
     return res.status(200).json({ msg: `User details updated successfully` });
   } catch (e) {
-    return res.status(400).json({ msg: `Internal server error` });
+    return res.status(500).json({ msg: `Internal server error` });
   }
 });
 
@@ -133,7 +133,7 @@ userRouter.get("/bulk", async (req, res) => {
     });
     return res.status(200).json({ matchingUsers });
   } catch (e) {
-    return res.status(400).json({ msg: `Internal server error` });
+    return res.status(500).json({ msg: `Internal server error` });
   }
 });
 
