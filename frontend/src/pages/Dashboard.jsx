@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -56,51 +57,68 @@ const Dashboard = () => {
           },
         }
       );
+      setIsLoading(false);
       setUsers(res.data.matchingUsers);
     }, 300);
     return () => clearTimeout(id);
   }, [searchText]);
 
-  return !isAuthorized ? (
-    <NonAuthorizationMessage />
-  ) : (
-    <div className="px-28 py-8">
-      <div className="flex justify-between items-center border-b-2 border-gray-300 pb-2">
-        <h1 className="text-3xl font-bold">Payments App</h1>
-        <div className="flex items-center gap-4">
-          <p className="font-medium text-lg">Hello, {currentUser.firstName}</p>
-          <Avatar letter={currentUser.firstName[0] + currentUser.lastName[0]} />
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        Loading...
+      </div>
+    );
+  } else {
+    return !isAuthorized ? (
+      <NonAuthorizationMessage />
+    ) : (
+      <div className="px-28 py-8">
+        <div className="flex justify-between items-center border-b-2 border-gray-300 pb-2">
+          <h1 className="text-3xl font-bold">Payments App</h1>
+          <div className="flex items-center gap-4">
+            <p className="font-medium text-lg">
+              Hello, {currentUser.firstName}
+            </p>
+            <Avatar
+              letter={currentUser.firstName[0] + currentUser.lastName[0]}
+            />
+          </div>
+        </div>
+        <div className="py-8">
+          <p className="inline-block bg-gray-100 font-bold text-xl rounded-full px-6 py-3">
+            Your Balance: <span className="font-medium">${balance}</span>
+          </p>
+        </div>
+        <div>
+          <h3 className="font-bold text-xl mb-2">Users</h3>
+          <Input
+            prop={searchText}
+            setProp={setSearchText}
+            type="text"
+            placeholder="Search users..."
+          />
+          {users.length === 0 ? (
+            <div className="text-center mt-12 text-lg">User not found!</div>
+          ) : (
+            <div className="flex flex-col gap-4 my-8 p-8 border-l-3 border-b-3 border-r-3 rounded-b-4xl">
+              {users.map((user) => {
+                return user._id === currentUser._id ? null : (
+                  <User
+                    key={user._id}
+                    username={user.username}
+                    firstName={user.firstName}
+                    lastName={user.lastName}
+                    receiverId={user._id}
+                  />
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
-      <div className="py-8">
-        <p className="inline-block bg-gray-100 font-bold text-xl rounded-full px-6 py-3">
-          Your Balance: <span className="font-medium">${balance}</span>
-        </p>
-      </div>
-      <div>
-        <h3 className="font-bold text-xl mb-2">Users</h3>
-        <Input
-          prop={searchText}
-          setProp={setSearchText}
-          type="text"
-          placeholder="Search users..."
-        />
-        <div className="flex flex-col gap-4 my-4">
-          {users.map((user) => {
-            return user._id === currentUser._id ? null : (
-              <User
-                key={user._id}
-                username={user.username}
-                firstName={user.firstName}
-                lastName={user.lastName}
-                receiverId={user._id}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Dashboard;

@@ -62,7 +62,7 @@ const SendMoney = () => {
               setProp={setAmount}
               label="Amount (in USD)"
               type="number"
-              placeholder="eg.15"
+              placeholder="eg. 15"
               min="0"
             />
             <button className="bg-green-600 text-white cursor-pointer rounded-sm py-2">
