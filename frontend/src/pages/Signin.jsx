@@ -4,6 +4,7 @@ import InfoText from "../components/InfoText";
 import Input from "../components/Input";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 const Signin = () => {
   const [username, setUsername] = useState("");
@@ -12,19 +13,24 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/user/signin`,
-      {
-        username,
-        password,
-      }
-    );
-    navigate("/dashboard");
-
-    localStorage.removeItem("token");
-    localStorage.setItem("token", "Bearer " + response.data.token);
-    setUsername("");
-    setPassword("");
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/user/signin`,
+        {
+          username,
+          password,
+        }
+      );
+      toast.success(res.data.msg);
+      navigate("/dashboard");
+      localStorage.removeItem("token");
+      localStorage.setItem("token", "Bearer " + res.data.token);
+    } catch (e) {
+      toast.error(e.response.data.msg);
+    } finally {
+      setUsername("");
+      setPassword("");
+    }
   };
   return (
     <div className="min-h-screen w-screen flex justify-center items-center bg-gray-300 py-8">

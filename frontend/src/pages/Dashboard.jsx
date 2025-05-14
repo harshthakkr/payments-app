@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Avatar from "../components/Avatar";
 import Input from "../components/Input";
 import User from "../components/User";
+import NonAuthorizationMessage from "../components/NonAuthorizationMessage";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
@@ -61,11 +62,7 @@ const Dashboard = () => {
   }, [searchText]);
 
   return !isAuthorized ? (
-    <div className="h-screen bg-gray-800 text-white flex justify-center items-center">
-      <h2 className="text-2xl tracking-wide text-gray-100">
-        You&apos;re not authorized to access this page, please signup/signin.
-      </h2>
-    </div>
+    <NonAuthorizationMessage />
   ) : (
     <div className="px-28 py-8">
       <div className="flex justify-between items-center border-b-2 border-gray-300 pb-2">

@@ -17,7 +17,6 @@ accountRouter.get("/balance", async (req, res) => {
     const { balance, user } = await Account.findOne({ user: req.id });
     return res.status(200).json({ balance, user });
   } catch (e) {
-    console.error(e);
     return res.status(500).json({ msg: "Internal server error" });
   }
 });
@@ -57,7 +56,6 @@ accountRouter.post("/transfer", async (req, res) => {
     await session.commitTransaction();
     return res.status(200).json({ msg: "Transaction successful" });
   } catch (e) {
-    console.error(e);
     return res.status(500).json({ msg: "Internal server error" });
   }
 });

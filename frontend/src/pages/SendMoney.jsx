@@ -3,34 +3,42 @@ import Avatar from "../components/Avatar";
 import Input from "../components/Input";
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "sonner";
+import NonAuthorizationMessage from "../components/NonAuthorizationMessage";
 
 const SendMoney = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { firstName, lastName, receiverId } = location.state;
+  const { firstName, lastName, receiverId } = location.state || {};
   const [amount, setAmount] = useState("");
 
   const handleTransfer = async (e) => {
     e.preventDefault();
-    const res = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/account/transfer`,
-      {
-        to: receiverId,
-        amount,
-      },
-      {
-        headers: {
-          Authorization: localStorage.getItem("token"),
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/account/transfer`,
+        {
+          to: receiverId,
+          amount,
         },
-      }
-    );
-    setAmount("");
-    if (res.status === 200) {
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      toast.success(res.data.msg);
+      setAmount("");
+    } catch (e) {
+      toast.error(e.response.data.msg);
+    } finally {
       navigate("/dashboard");
     }
   };
 
-  return (
+  return !firstName || !receiverId ? (
+    <NonAuthorizationMessage />
+  ) : (
     <div className="min-h-screen flex justify-center items-center">
       <div className="min-w-[448px] shadow-2xl rounded-2xl p-12">
         <h1 className="font-bold text-3xl text-center mb-12">Send Money</h1>
