@@ -4,8 +4,8 @@ import Input from "../components/Input";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import NonAuthorizationMessage from "../components/NonAuthorizationMessage";
 import Heading from "../components/Heading";
+import Message from "../components/Message";
 
 const SendMoney = () => {
   const navigate = useNavigate();
@@ -38,10 +38,10 @@ const SendMoney = () => {
   };
 
   return !username || !firstName || !receiverId ? (
-    <NonAuthorizationMessage />
+    <Message text="You're not authorized to access this page, please signup/signin." />
   ) : (
-    <div className="min-h-screen flex justify-center items-center">
-      <div className="min-w-[448px] shadow-2xl rounded-2xl p-12">
+    <div className="min-h-screen flex justify-center items-center bg-gray-300">
+      <div className="p-6 sm:p-12 w-[375px] sm:w-[420px] md:w-[480px] shadow-2xl rounded-2xl bg-white">
         <Heading text="Send Money" />
         <div className="flex flex-col gap-3 mt-11">
           <div className="flex gap-4 items-center bg-gray-100 px-4 py-3 rounded-lg">

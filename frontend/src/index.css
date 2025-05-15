@@ -3,6 +3,7 @@
 
 @theme {
   --font-outfit: "Outfit", sans-serif;
+  --breakpoint-xs: 30rem;
 }
 
 body {

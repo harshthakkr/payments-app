@@ -35,7 +35,7 @@ const Signin = () => {
   };
   return (
     <div className="min-h-screen w-screen flex justify-center items-center bg-gray-300 py-8">
-      <div className="bg-white rounded-2xl p-12">
+      <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-12 w-[375px] sm:w-[420px] md:w-[480px]">
         <Heading text="Sign In" />
         <InfoText text="Enter your credentials to access your account" />
         <form className="flex flex-col gap-4" onSubmit={(e) => handleSubmit(e)}>

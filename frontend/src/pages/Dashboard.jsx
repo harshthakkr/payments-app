@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Avatar from "../components/Avatar";
 import Input from "../components/Input";
 import User from "../components/User";
-import NonAuthorizationMessage from "../components/NonAuthorizationMessage";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import Message from "../components/Message";
 
 const Dashboard = () => {
   const [currentUser, setCurrentUser] = useState({
@@ -63,21 +63,23 @@ const Dashboard = () => {
     return () => clearTimeout(id);
   }, [searchText]);
 
-  if (isLoading) {
+  if (!isAuthorized) {
     return (
+      <Message text="You're not authorized to access this page, please signup/signin." />
+    );
+  } else {
+    return isLoading ? (
       <div className="min-h-screen flex justify-center items-center">
         Loading...
       </div>
-    );
-  } else {
-    return !isAuthorized ? (
-      <NonAuthorizationMessage />
     ) : (
-      <div className="px-28 py-8">
-        <div className="flex justify-between items-center border-b-2 border-gray-300 pb-2">
-          <h1 className="text-3xl font-bold">Payments App</h1>
-          <div className="flex items-center gap-4">
-            <p className="font-medium text-lg">
+      <div className="px-4 py-2 sm:px-14 sm:py-4 md:px-28 md:py-8">
+        <div className="flex justify-between items-center gap-4 border-b-2 border-gray-300 pb-2">
+          <h1 className="text-2xl sm:text-2xl md:text-3xl font-bold">
+            Payments App
+          </h1>
+          <div className="flex items-center gap-2 md:gap-4">
+            <p className="font-medium sm:text-lg">
               Hello, {currentUser.firstName}
             </p>
             <Avatar
@@ -85,9 +87,9 @@ const Dashboard = () => {
             />
           </div>
         </div>
-        <div className="py-8">
-          <p className="inline-block bg-gray-100 font-bold text-xl rounded-full px-6 py-3">
-            Your Balance: <span className="font-medium">${balance}</span>
+        <div className="py-8 flex flex-col xs:block text-center xs:text-left">
+          <p className="inline-block bg-gray-100 font-medium text-xl rounded-full px-6 py-3">
+            Your Balance: <span className="font-bold">${balance}</span>
           </p>
         </div>
         <div>
@@ -101,7 +103,7 @@ const Dashboard = () => {
           {users.length === 0 ? (
             <div className="text-center mt-12 text-lg">User not found!</div>
           ) : (
-            <div className="flex flex-col gap-4 my-8 p-8 border-l-3 border-b-3 border-r-3 rounded-b-4xl">
+            <div className="flex flex-col gap-4 my-6 md:my-8 sm:p-4 md:p-8 sm:border-l-3 sm:border-b-3 sm:border-r-3 rounded-b-2xl md:rounded-b-4xl">
               {users.map((user) => {
                 return user._id === currentUser._id ? null : (
                   <User
